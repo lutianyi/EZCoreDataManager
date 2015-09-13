@@ -32,7 +32,7 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        persenList = [[NSMutableArray alloc] initWithArray:[[EZCoreDataManager defaultManager] fetchManagedObjectModelWithName:@"Person" predicate:nil sortKeys:nil]];
+        persenList = [[NSMutableArray alloc] initWithArray:[[EZCoreDataManager defaultManager] fetchEntitiesWithName:@"Person" predicate:nil sortKeys:nil]];
         
         [self.myTableView reloadData];
     });
@@ -52,11 +52,12 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     Person * personEntity = persenList[indexPath.row];
     
     cell.textLabel.text = personEntity.p_name;
+    cell.detailTextLabel.text = [personEntity.p_age stringValue];
     
     return cell;
 }

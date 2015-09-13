@@ -28,7 +28,6 @@ static EZCoreDataManager * s_defaultManager = nil;
         
         s_defaultManager = [[EZCoreDataManager alloc] init];
     });
-    
     return s_defaultManager;
 }
 
@@ -48,14 +47,14 @@ static EZCoreDataManager * s_defaultManager = nil;
     return self;
 }
 
-- (void)addManagedObjectModelWithName:(NSString *)name dictionary:(NSDictionary *)dictionary  {
+- (void)addManagedObjectForName:(NSString *)name dictionary:(NSDictionary *)dictionary {
     
     NSManagedObject * managerObject = [NSEntityDescription insertNewObjectForEntityForName:name inManagedObjectContext:self.managedObjectContext];
     
     [managerObject setValuesForKeysWithDictionary:dictionary];
 }
 
-- (NSArray *)fetchManagedObjectModelWithName:(NSString *)name predicate:(NSPredicate *)predicate sortKeys:(NSArray *)sortkeys {
+- (NSArray *)fetchEntitiesWithName:(NSString *)name predicate:(NSPredicate *)predicate sortKeys:(NSArray *)keys {
     
     // 实例化查询请求
     NSFetchRequest * fetchRequest = [NSFetchRequest fetchRequestWithEntityName:name];
@@ -67,13 +66,13 @@ static EZCoreDataManager * s_defaultManager = nil;
     }
     
     // 如果没有用来排序的key, 那么默认不排序
-    if (sortkeys) {
+    if (keys) {
         
         // 如果有排序的Key就先创建一个数组来接收多个NSSortDescriptor对象(尽管是一个, 因为setSortDescriptors:方法需要数组作为参数)
         NSMutableArray * sortDescriptorKeys = [NSMutableArray new];
         
         // 遍历所有的用来排序的key
-        for (NSString * key in sortkeys) {
+        for (NSString * key in keys) {
             
             // 每有一个Key, 就使用该key来创建一个NSSortDescriptor
             NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:key ascending:YES];
@@ -89,20 +88,14 @@ static EZCoreDataManager * s_defaultManager = nil;
     // 使用数组来接收查询到的内容
     NSArray * fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
     
-    // 如果数组为nil
-    if (fetchedObjects == nil) {
-        
-        // 创建一个新的数组返回, 在外部去做判断
-        fetchedObjects = [NSArray new];
-    }
-    // 返回查找到的数组
-    return fetchedObjects;
+    // 创建一个新的数组返回, 在外部去做判断
+    return fetchedObjects ? fetchedObjects : [NSArray new];
 }
 
-- (void)deleteAllManagedObjectModels:(NSArray *)models {
+- (void)deleteAllEntityObjects:(NSArray *)objects {
     
     // 遍历删除传进来数组中的元素对应的表内容
-    for (NSManagedObject * object in models) {
+    for (NSManagedObject * object in objects) {
         
         // 使用管理者删除对象, 数组中的元素并没有缺少
         [self.managedObjectContext deleteObject:object];
@@ -144,9 +137,9 @@ static EZCoreDataManager * s_defaultManager = nil;
     
     if (!_persistentStoreCoordinator) {
         
-        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
         
-        NSURL * storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", self.persistentStoreName]];
+        NSURL * storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", self.databaseName]];
         
         [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:@{NSInferMappingModelAutomaticallyOption: @YES, NSMigratePersistentStoresAutomaticallyOption: @YES} error:nil];
     }
@@ -163,11 +156,12 @@ static EZCoreDataManager * s_defaultManager = nil;
     if (!_managedObjectContext) {
         
         _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
+        [_managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     }
     return _managedObjectContext;
 }
 
+# pragma mark - Core Data Model Name
 /**
  *  可视化Model类的对应名称, 如果没有就使用当前的BundleName关联
  */
@@ -179,15 +173,17 @@ static EZCoreDataManager * s_defaultManager = nil;
     return _xcdatamodeldName;
 }
 
+# pragma mark - Database Name
 /**
  *  保存到本地的文件名称, 如果没有保存为BundleName.sqlite
  */
-- (NSString *)persistentStoreName {
+
+- (NSString *)databaseName {
     
-    if (!_persistentStoreName) {
-        _persistentStoreName = [self currentBundleName];
+    if (!_databaseName) {
+        _databaseName = [self currentBundleName];
     }
-    return _persistentStoreName;
+    return _databaseName;
 }
 
 /**

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D1F3E501BA2D05700ACF006 /* NSPredicateDescription in Resources */ = {isa = PBXBuildFile; fileRef = 9D1F3E4F1BA2D05700ACF006 /* NSPredicateDescription */; };
 		9DB7E73E1B9FFA8F0033DFDE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB7E73D1B9FFA8F0033DFDE /* main.m */; };
 		9DB7E74C1B9FFA8F0033DFDE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DB7E74B1B9FFA8F0033DFDE /* Images.xcassets */; };
 		9DB7E74F1B9FFA8F0033DFDE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9DB7E74D1B9FFA8F0033DFDE /* LaunchScreen.xib */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9D1F3E4F1BA2D05700ACF006 /* NSPredicateDescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NSPredicateDescription; sourceTree = "<group>"; };
 		9DB7E7381B9FFA8F0033DFDE /* EZCoreDataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EZCoreDataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DB7E73C1B9FFA8F0033DFDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9DB7E73D1B9FFA8F0033DFDE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			children = (
 				9DB7E77D1B9FFCE90033DFDE /* EZCoreDataManager.h */,
 				9DB7E77E1B9FFCE90033DFDE /* EZCoreDataManager.m */,
+				9D1F3E4F1BA2D05700ACF006 /* NSPredicateDescription */,
 			);
 			path = EZCoreDataManager;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D1F3E501BA2D05700ACF006 /* NSPredicateDescription in Resources */,
 				9DB7E74F1B9FFA8F0033DFDE /* LaunchScreen.xib in Resources */,
 				9DB7E74C1B9FFA8F0033DFDE /* Images.xcassets in Resources */,
 			);
@@ -465,6 +469,7 @@
 				9DB7E7601B9FFA8F0033DFDE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9DB7E7611B9FFA8F0033DFDE /* Build configuration list for PBXNativeTarget "EZCoreDataExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +478,7 @@
 				9DB7E7631B9FFA8F0033DFDE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

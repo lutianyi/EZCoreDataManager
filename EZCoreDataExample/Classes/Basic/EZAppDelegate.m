@@ -31,7 +31,7 @@
      
         NSDictionary * parameters = @{@"p_name": @"Ezer", @"p_age": @25};
         
-        [[EZCoreDataManager defaultManager] addManagedObjectModelWithName:@"Person" dictionary:parameters];
+        [[EZCoreDataManager defaultManager] addManagedObjectForName:@"Person" dictionary:parameters];
     }
     
     return YES;
